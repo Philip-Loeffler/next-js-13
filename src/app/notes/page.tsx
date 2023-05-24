@@ -5,10 +5,15 @@
 
 import Link from "next/link";
 import styles from "./Notes.module.css";
+import CreateNote from "./[id]/createNote";
 
 async function getNotes() {
   const res = await fetch(
-    "http://127.0.0.1:8090/api/collections/notes/records?page=1&perPage=30"
+    "http://127.0.0.1:8090/api/collections/notes/records?page=1&perPage=30",
+
+    {
+      cache: "no-store",
+    }
   );
   const data = await res.json();
   return data?.items as any;
@@ -20,10 +25,11 @@ export default async function NotesPage() {
     <div>
       <h1>notes</h1>
       <div className={styles.grid}>
-        {notes?.map((note) => {
+        {notes?.map((note: any) => {
           return <Note key={note.id} note={note} />;
         })}
       </div>
+      <CreateNote />
     </div>
   );
 }
